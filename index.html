@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SOS TUKKI - Prototype</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+    body { background-color: #f4f6f9; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 20px; }
+    .phone { width: 360px; height: 680px; background: #fff; border-radius: 36px; border: 11px solid #1e293b; display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.15); position: relative; }
+    .header { background: #0284c7; color: white; padding: 20px 16px 16px; text-align: center; font-weight: bold; font-size: 1.2rem; }
+    .screen { display: none; padding: 16px; flex: 1; overflow-y: auto; }
+    .screen.active { display: block; }
+    .btn { display: block; width: 100%; padding: 14px; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; text-align: center; margin-top: 12px; font-size: 0.95rem; }
+    .btn-sos { background: #dc2626; color: white; animation: pulse 2s infinite; }
+    .btn-primary { background: #0284c7; color: white; }
+    .btn-secondary { background: #e2e8f0; color: #1e293b; }
+    input, select { width: 100%; padding: 12px; margin-bottom: 12px; border: 1px solid #cbd5e1; border-radius: 8px; font-size: 0.9rem; }
+    .card { background: #f8fafc; border: 1px solid #e2e8f0; padding: 14px; border-radius: 12px; margin-bottom: 12px; cursor: pointer; }
+    .card:hover { border-color: #0284c7; }
+    .nav { display: flex; border-top: 1px solid #e2e8f0; background: #fff; }
+    .nav-item { flex: 1; padding: 12px 0; text-align: center; font-size: 0.75rem; color: #64748b; cursor: pointer; }
+    .nav-item.active { color: #0284c7; font-weight: bold; }
+    @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.02); } 100% { transform: scale(1); } }
+  </style>
+</head>
+<body>
+
+<div class="phone">
+  <div class="header" id="appHeader">SOS TUKKI</div>
+
+  <!-- Ecran 1 : Recherche / Urgence -->
+  <div id="screen1" class="screen active">
+    <button class="btn btn-sos" onclick="goToScreen(2)">🚨 DÉPART SOS URGENT</button>
+    <div style="margin: 20px 0; text-align: center; color: #64748b; font-weight: bold; font-size: 0.85rem;">— OU RECHERCHE CLASSIQUE —</div>
+    <input type="text" placeholder="Départ (ex: Dakar)" value="Dakar">
+    <input type="text" placeholder="Destination (ex: Thiès)" value="Thiès">
+    <input type="date">
+    <button class="btn btn-primary" onclick="goToScreen(2)">Rechercher un trajet</button>
+  </div>
+
+  <!-- Ecran 2 : Résultats -->
+  <div id="screen2" class="screen">
+    <p style="font-weight: bold; margin-bottom: 12px; color: #334155;">Trajets disponibles :</p>
+    
+    <div class="card" onclick="goToScreen(3)">
+      <div style="display: flex; justify-content: space-between; font-weight: bold; color: #0284c7;">
+        <span>Amadou S.</span> <span>2 500 FCFA</span>
+      </div>
+      <div style="font-size: 0.85rem; color: #64748b; margin-top: 4px;">Dakar ➔ Thiès • Départ : 15 min</div>
+      <div style="font-size: 0.75rem; color: #16a34a; font-weight: bold; margin-top: 4px;">⚡ Embarquement Prioritaire SOS</div>
+    </div>
+
+    <div class="card" onclick="goToScreen(3)">
+      <div style="display: flex; justify-content: space-between; font-weight: bold; color: #0284c7;">
+        <span>Moussa D.</span> <span>2 000 FCFA</span>
+      </div>
+      <div style="font-size: 0.85rem; color: #64748b; margin-top: 4px;">Dakar ➔ Thiès • Départ : 1h</div>
+    </div>
+
+    <button class="btn btn-secondary" onclick="goToScreen(1)">⬅️ Retour</button>
+  </div>
+
+  <!-- Ecran 3 : Détails et Réservation -->
+  <div id="screen3" class="screen">
+    <h3 style="color: #0284c7; margin-bottom: 8px;">Détails du voyage</h3>
+    <p style="font-size: 0.9rem; color: #334155;"><strong>Conducteur :</strong> Amadou S.</p>
+    <p style="font-size: 0.9rem; color: #334155;"><strong>Trajet :</strong> Dakar (HLM) ➔ Thiès</p>
+    <p style="font-size: 0.9rem; color: #334155;"><strong>Prix :</strong> 2 500 FCFA</p>
+    
+    <div style="margin-top: 16px; background: #e0f2fe; padding: 12px; border-radius: 8px; font-size: 0.85rem; color: #0369a1;">
+      💬 **Contact direct :** Le conducteur vous attend au point de rendez-vous.
+    </div>
+
+    <button class="btn btn-primary" onclick="alert('Réservation confirmée ! Le conducteur est prévenu.')">Valider l'embarquement</button>
+    <button class="btn btn-secondary" onclick="goToScreen(2)">⬅️ Retour</button>
+  </div>
+
+  <div class="nav">
+    <div class="nav-item active" onclick="goToScreen(1)">🏠 Accueil</div>
+    <div class="nav-item" onclick="goToScreen(2)">🚗 Trajets</div>
+    <div class="nav-item" onclick="alert('Espace propriétaire : Publiez vos places libres pour réduire vos frais !')">➕ Publier</div>
+  </div>
+</div>
+
+<script>
+  function goToScreen(screenNumber) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById('screen' + screenNumber).classList.add('active');
+  }
+</script>
+
+</body>
+</html>
